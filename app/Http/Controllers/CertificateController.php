@@ -11,7 +11,10 @@ class CertificateController extends Controller
 
 
     public function index(){
-        return view('certificate/index');
+
+        $certificates = Certificate::all();
+
+        return view('certificate/index', compact('certificates'));
     }
 
     public function create(){
@@ -24,19 +27,39 @@ class CertificateController extends Controller
         ]);
 
 
-        $filePath = null;
+        $imageName = null;
         if ($request->hasFile('file')){
             $imageName = time().'.'.$request->file->extension();
 
-            $request->file->move(public_path('files'), $imageName);
+            $request->file->storeAs('certificates/', $imageName, 'public');
         }
-        Certificate::create([
+        $data = [
             'title' => $request->get('title'),
             'from' => $request->get('from'),
-            'file' => 'images'
-        ]);
+        ];
+        if ($imageName)
+            $data['file'] = 'images/'.$imageName;
+        Certificate::create($data);
+
+        return redirect()->back()->with('success', 'Certificate saved successfully');
 
 
     }
+
+    public function show($id){
+        $certificate = Certificate::findOrFail($id);
+
+        return view('certificate.show', compact('certificate'));
+    }
+
+    public function changeStatus($id, $status){
+
+        Certificate::find($id)->update([
+            'status' => $status,
+        ]);
+
+        return redirect()->back()->with('success', 'Certificate Status updated successfully');
+    }
+
 
 }

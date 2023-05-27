@@ -28,27 +28,19 @@
                             <th>Title</th>
                             <th>Date</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>183</td>
-                            <td>John Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-success">Approved</span></td>
-                        </tr>
-                        <tr>
-                            <td>219</td>
-                            <td>Alexander Pierce</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-warning">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>657</td>
-                            <td>Bob Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-primary">Approved</span></td>
-                        </tr>
+                        @foreach($certificates as $key=>$certificate)
+                            <tr>
+                                <td>{{ $key +1 }}</td>
+                                <td>{{ $certificate->title }}</td>
+                                <td>{{ $certificate->created_at->format('Y-m-d') }}</td>
+                                <td><span class="tag tag-success">{{ $certificate->status }}</span></td>
+                                <td><a href="{{ route('certificate.show', $certificate->id) }}" class="btn btn-primary">Show</a> </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
