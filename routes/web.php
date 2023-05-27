@@ -28,9 +28,12 @@ Route::middleware('auth:admin')->group(function (){
     Route::get('auth/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware('guest:admin')->group(function (){
+Route::middleware('guest')->group(function (){
     Route::get('auth/login', [\App\Http\Controllers\AuthController::class, 'loginView'])->name('login.view');
     Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
+
+    Route::get('register', [\App\Http\Controllers\AuthController::class, 'registerView'])->name('register.view');
+    Route::post('register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
 });
 
 
